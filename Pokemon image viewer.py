@@ -16,7 +16,7 @@ def main():
 
 
     root = Tk()
-    root.title('Pokemon Image Viewer')
+    root.title('Pokemon Image Viewer')#making the window and changing the icons
     app_id = 'Pokemon.Image.Viewer'
     ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(app_id)
     root.iconbitmap(os.path.join(script_dir, 'pokeball.ico'))
@@ -24,28 +24,28 @@ def main():
     root.columnconfigure(0, weight=1)
     root.minsize(500,600)
 
-    frm = ttk.Frame(root)
+    frm = ttk.Frame(root) #making the frame and sizes
     frm.grid(sticky=(N,S,E,W))
     frm.rowconfigure(0, weight=10)
     frm.rowconfigure(1, weight=0)
     frm.rowconfigure(2, weight=0)
     frm.columnconfigure(0, weight=1)
 
-    pokeImage = PhotoImage(file=os.path.join(script_dir, 'pokeball.png'))
+    pokeImage = PhotoImage(file=os.path.join(script_dir, 'pokeball.png'))#setting the initial image
     imageLabel = ttk.Label(frm, image = pokeImage)
     imageLabel.grid(row=0,column=0,padx=5,pady=5)
 
 
-    listOfMons = pokeList()
+    listOfMons = pokeList()#making the list of pokemon alphabeticla and capitalizing 
     listOfMons.sort()
     listOfMons = [p.capitalize() for p in listOfMons]
 
 
-    cbo_pokelist = ttk.Combobox(frm, values=listOfMons, state='readonly')
+    cbo_pokelist = ttk.Combobox(frm, values=listOfMons, state='readonly')#making the combobox
     cbo_pokelist.set('Select a Pokemon')
     cbo_pokelist.grid(row=1,column=0,padx=5,pady=5)
 
-    def pokeSelect(event):
+    def pokeSelect(event):#combobox makes a selection
         pokeName = cbo_pokelist.get()
         image_url = retrieveMonsImage(pokeName)
         img_path = os.path.join(img_dir, pokeName + '.png')
@@ -53,15 +53,14 @@ def main():
         pokeImage['file'] = img_path
         btn_dsktp.state(['!disabled'])
 
-
     cbo_pokelist.bind('<<ComboboxSelected>>',pokeSelect)
 
-    def pokeDesktopImage(event):
+    def pokeDesktopImage(event):#Button press
         pokeName = cbo_pokelist.get()
         img_path = os.path.join(img_dir, pokeName + '.png')
         set_desktop_background_image(img_path)
 
-    btn_dsktp = ttk.Button(frm, text='Set as Desktop Image', command=pokeDesktopImage)
+    btn_dsktp = ttk.Button(frm, text='Set as Desktop Image', command=pokeDesktopImage)#making the button
     btn_dsktp.state(['disabled'])
     btn_dsktp.grid(row=2,column=0,padx=5,pady=5)
 
